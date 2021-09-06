@@ -162,18 +162,18 @@ def contains_measurement(units, comment, old_comments):
                             #if the unit in the comment is "inches"
                             elif (i == 4):
                                 old_unit = 0.0254 * measurement
-                                                                                                    # #if the unit in the comment is "meter"
-                                                                                                    # elif (i == 5):
-                                                                                                    #     old_unit = 1 * measurement
-                                                                                                    # #if the unit in the comment is "yard"
-                                                                                                    # elif (i == 6):
-                                                                                                    #     old_unit = 0.9144 * measurement
-                                                                                                    # #if the unit in the comment is "mile"
-                                                                                                    # elif (i == 7):
-                                                                                                    #     old_unit = 1609.34 * measurement
-                                                                                                    # #if the unit in the comment is "inch"
-                                                                                                    # elif (i == 8):
-                                                                                                    #     old_unit = 0.0254 * measurement
+                            #if the unit in the comment is "meter"
+                            elif (i == 5):
+                                old_unit = 1 * measurement
+                            #if the unit in the comment is "yard"
+                            elif (i == 6):
+                                old_unit = 0.9144 * measurement
+                            #if the unit in the comment is "mile"
+                            elif (i == 7):
+                                old_unit = 1609.34 * measurement
+                            #if the unit in the comment is "inch"
+                            elif (i == 8):
+                                old_unit = 0.0254 * measurement
 
                             try:
                                 #we try to comment the measurement, the unit, then the string after its conversion to a weird measurement
@@ -223,15 +223,15 @@ def contains_measurement(units, comment, old_comments):
                             #if the unit in the comment is "tons"
                             elif (i == 4):
                                 old_unit = 907185 * measurement
-                                                                                                    # #if the unit in the comment is "gram"
-                                                                                                    # if (i == 5):
-                                                                                                    #     old_unit = 1 * measurement
-                                                                                                    # #if the unit in the comment is "kilogram"
-                                                                                                    # elif (i == 6):
-                                                                                                    #     old_unit = 1000 * measurement
-                                                                                                    # #if the unit in the comment is "pound"
-                                                                                                    # elif (i == 7):
-                                                                                                    #     old_unit = 453.592 * measurement
+                            #if the unit in the comment is "gram"
+                            if (i == 5):
+                                old_unit = 1 * measurement
+                            #if the unit in the comment is "kilogram"
+                            elif (i == 6):
+                                old_unit = 1000 * measurement
+                            #if the unit in the comment is "pound"
+                            elif (i == 7):
+                                old_unit = 453.592 * measurement
 
                             try:
                                 #we try to comment the measurement, the unit, then the string after its conversion to a weird measurement
