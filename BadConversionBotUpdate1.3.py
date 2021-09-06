@@ -512,10 +512,6 @@ def print_exception():
     line = linecache.getline(filename, lineno, f.f_globals)
     return ('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj))
 
-
-
-
-
 #now that everything is defined, we can start the main loop
 print("Starting. . .")
 while True:
