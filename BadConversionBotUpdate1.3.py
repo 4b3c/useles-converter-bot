@@ -62,7 +62,7 @@ def meters_to_random_unit_then_create_comment(old_unit):
         return new_record
     #if the random number was 8, we convert it to the world record hot dog
     elif (new_unit == 8):
-        new_record = " is " + str(round(old_unit / 203.606, 2)) + " of the hot dog which holds the Guinness wold record for 'Longest Hot Dog'."
+        new_record = " is " + str(round(old_unit / 20360.6, 2)) + "% of the hot dog which holds the Guinness wold record for 'Longest Hot Dog'."
         return new_record
     #if the random number was 9, we convert it to sting
     elif (new_unit == 9):
