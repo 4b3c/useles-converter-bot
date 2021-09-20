@@ -45,3 +45,5 @@ def make_units_standard(check_for_units):
         #if the unit in the comment is "tons"
         elif (i == 9):
             old_unit = 907185 * measurement
+
+        return old_unit
