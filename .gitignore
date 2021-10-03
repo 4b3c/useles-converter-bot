@@ -123,3 +123,5 @@ mention_comments.txt
 my_comments.txt
 opted_out.txt
 .run.bat
+opted_out.json
+comment_IDs.json
