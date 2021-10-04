@@ -117,14 +117,14 @@ def manage_opting(comment):
     opted_out = get_opted_out()
 
     if ("opt in" in comment.body.lower() and comment.author in opted_out):
-        opted_out.remove(comment.author)
+        opted_out.remove(str(comment.author))
         comment.reply("You have been opted back in.")
     elif ("opt in" in comment.body.lower()):
         comment.reply("You aren't opted out.")
     elif ("opt out" in comment.body.lower() and comment.author in opted_out):
         comment.reply("You are already opted out.")
     elif ("opt out" in comment.body.lower()):
-        opted_out.append(comment.author)
+        opted_out.append(str(comment.author))
         comment.reply("You have been opted out.")
     else:
         reddit.redditor("-i-hate-this-place-").message("OPT ERROR:", str(comment.submission.url))
@@ -242,5 +242,5 @@ while True:
     except:
         exception = print_exception().lower()
         if ("http" not in exception and "ratelimit" not in exception):
-            print(print_exception())
+            print(prit_exception())
 
