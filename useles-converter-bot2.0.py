@@ -131,38 +131,32 @@ def manage_opting(comment):
 
 def check_inbox():
     for item in reddit.inbox.unread(limit = 5):
-        if (isinstance(item, Comment)):
-            if ("good bot" in item.body.lower()):
-                if (random.randint(0, 1) == 0):
-                    item.reply("Thanks!")
-                elif (random.randint(0, 1) == 0):
-                    item.reply("Thank you! :)")
-                elif (random.randint(0, 1) == 0):
-                    item.reply("Amazon, sponsor me, the redditors like me...")
-                elif (random.randint(0, 1) == 0):
-                    item.reply("ur mom")
-                else:
-                    item.reply("""Just wanted to say that there's a 6.25% chance of getting this reply, so congratulations. Buy a lottery ticket... 
-                        just kidding, don't do that, and if you do I hope you lose all your money, Have a good day.""")
-            elif ("bad bot" in item.body.lower()):
-                item.reply("Rude! just kidding, if you want to opt out, reply 'opt out'. Thanks")
-            elif ("useles" in item.body.lower() and "spell" in item.body.lower()):
-                item.reply("""From the words you used, it seems like you are bashing the spelling of my username. I wanted to be useless-converter-bot 
-                    because I wanted to be the useless version of 'converter-bot', however, Reddit has a 20 character limit for usernames and that's why 
-                    I had to remove one character, I picked the S as there is a second one.""")
-                reddit.redditor("-i-hate-this-place-").message("Useles Reply:", str(item.permalink))
-            elif ("opt" in item.body.lower()):
-                manage_opting(item)
-
-        elif (isinstance(item, Mention)):
-            if (check_for_units(item)[2] == True):
-                item.reply(create_comment(make_units_standard(check_for_units(item))))
-            elif (check_for_units(item.parent)[2] == True):
-                item.parent.reply(create_comment(make_units_standard(check_for_units(item.parent))))
-            elif ("opt" in item.body.lower()):
-                manage_opting(item)
+        if ("good bot" in item.body.lower()):
+            if (random.randint(0, 1) == 0):
+                reply = "Thanks!"
+            elif (random.randint(0, 1) == 0):
+                reply = "Thank you :)"
+            elif (random.randint(0, 1) == 0):
+                reply = "Amazon, sponsor me, the redditors like me..."
+            elif (random.randint(0, 1) == 0):
+                reply = "ur mom"
             else:
-                reddit.redditor("-i-hate-this-place-").message("Unknown Mention Reason:", str(item.permalink))
+                reply = """Just wanted to say that there's a 6.25% chance of getting this reply, so congratulations. Buy a lottery ticket... 
+                    just kidding, don't do that, and if you do I hope you lose all your money, Have a good day."""
+            item.reply(reply)
+        elif ("bad bot" in item.body.lower()):
+            item.reply("Rude! just kidding, if you want to opt out, reply 'opt out'. Thanks")
+        elif ("useles" in item.body.lower() and "spell" in item.body.lower()):
+            item.reply("""From the words you used, it seems like you are bashing the spelling of my username. I wanted to be useless-converter-bot 
+                because I wanted to be the useless version of 'converter-bot', however, Reddit has a 20 character limit for usernames and that's why 
+                I had to remove one character, I picked the S as there is a second one.""")
+            reddit.redditor("-i-hate-this-place-").message("Useles Reply:", str(item.permalink))
+        elif ("opt" in item.body.lower()):
+            manage_opting(item)
+        elif (check_for_units(item)[2] == True):
+            item.reply(create_comment(make_units_standard(check_for_units(item))))
+        elif (check_for_units(reddit.comment(item.parent_id))[2] == True):
+            reddit.comment(item.parent_id).reply(create_comment(make_units_standard(check_for_units(reddit.comment(item.parent_id)))))
 
     reddit.inbox.mark_all_read()
 
@@ -219,5 +213,5 @@ while True:
     except:
         exception = print_exception().lower()
         if ("http" not in exception and "ratelimit" not in exception):
-            print(prnt_exception())
+            print(print_exception())
 
