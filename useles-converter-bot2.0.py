@@ -1,5 +1,4 @@
 import random, time, praw, sys, linecache, login_info, json
-from praw.models import Comment
 
 reddit = login_info.reddit
 
@@ -10,7 +9,11 @@ def get_opted_out():
         return json.load(file)
 
 def check_for_units(comment):
-    split_string = comment.body.replace("\n", " ")
+    try:
+        split_string = comment.body.replace("\n", " ")
+    except:
+        comment = reddit.comment(comment)
+        split_string = comment.body.replace("\n", " ")
     split_string = split_string.split(" ")
 
     for unit in range(len(units)):
@@ -74,13 +77,13 @@ def create_comment(type_and_amount):
         elif (rand_num == 6):
             new_record = "is the length of approximately " + str(round(standard_unit / 0.2286, 2)) + " 'Wooden Rice Paddle Versatile Serving Spoons' laid lengthwise."
         elif (rand_num == 7):
-            new_record = "is the length of exactly " + str(round(standard_unit / 0.101854, 2)) + " 'Standard Diatonic Key of C, Blues Silver grey Harmonicas' lined up next to each other."
+            new_record = "is the height of " + str(round(standard_unit /1.0668, 2)) + " stacked among us characters. I am sorry."
         elif (rand_num == 8):
             new_record = "is " + str(round(standard_unit / 2.03911, 2)) + "% of the hot dog which holds the Guinness wold record for 'Longest Hot Dog'."
         elif (rand_num == 9):
             new_record = "is the the same distance as " + str(round(standard_unit / 0.69, 2)) + " replica Bilbo from The Lord of the Rings' Sting Swords."
         elif (rand_num == 10):
-            new_record = "is the length of " + str(round(standard_unit / 0.127, 2)) + " 'Bug Bite Thing Suction Tool - Poison Remover For Bug Bites's stacked on top of each other."
+            new_record = "is " + str(round(standard_unit / 1.8796, 2)) + " Obamas. You're welcome."
     
     elif (unit > 4):
         rand_num = random.randint(0, 10)
@@ -113,25 +116,26 @@ def create_comment(type_and_amount):
 def manage_opting(comment):
     opted_out = get_opted_out()
 
-    if ("opt in" in comment and comment.author in opted_out):
+    if ("opt in" in comment.body.lower() and comment.author in opted_out):
         opted_out.remove(comment.author)
         comment.reply("You have been opted back in.")
-    elif ("opt in" in comment):
+    elif ("opt in" in comment.body.lower()):
         comment.reply("You aren't opted out.")
-    elif ("opt out" in comment and comment.author in opted_out):
+    elif ("opt out" in comment.body.lower() and comment.author in opted_out):
         comment.reply("You are already opted out.")
-    elif ("opt out" in comment):
+    elif ("opt out" in comment.body.lower()):
         opted_out.append(comment.author)
         comment.reply("You have been opted out.")
     else:
-        reddit.redditor("-i-hate-this-place-").message("OPT ERROR:", str(comment.permalink))
+        reddit.redditor("-i-hate-this-place-").message("OPT ERROR:", str(comment.submission.url))
 
     with open("opted_out.json", "w") as file:
         json.dump(opted_out, file, indent = 3)
 
 def check_inbox():
-    for item in reddit.inbox.unread(limit = 5):
-        if ("good bot" in item.body.lower()):
+    for item in reddit.inbox.unread(limit = 3):
+        if ("good bot" in item.body.lower() or "great bot" in item.body.lower()):
+            reddit.inbox.mark_read([item])
             if (random.randint(0, 1) == 0):
                 reply = "Thanks!"
             elif (random.randint(0, 1) == 0):
@@ -145,20 +149,45 @@ def check_inbox():
                     just kidding, don't do that, and if you do I hope you lose all your money, Have a good day."""
             item.reply(reply)
         elif ("bad bot" in item.body.lower()):
+            reddit.inbox.mark_read([item])
             item.reply("Rude! just kidding, if you want to opt out, reply 'opt out'. Thanks")
+        elif ("sentient" in item.body.lower()):
+            reddit.inbox.mark_read([item])
+            item.reply("I swear... I'm a bot.")
+            reddit.redditor("-i-hate-this-place-").message("heheh:", str(item.permalink))
+        elif ("useless bot" in item.body.lower()):
+            reddit.inbox.mark_read([item])
+            item.reply("That's the point-")
+            reddit.redditor("-i-hate-this-place-").message("heheh:", str(item.permalink))
+        elif ("sentient" in item.body.lower()):
+            reddit.inbox.mark_read([item])
+            item.reply("I swear... I'm a bot.")
+            reddit.redditor("-i-hate-this-place-").message("heheh:", str(item.permalink))
+        elif ("sure you are a bot" in item.body.lower() or "sure you're a bot" in item.body.lower()):
+            reddit.inbox.mark_read([item])
+            item.reply("I am, I am a bot, I promise...")
+            reddit.redditor("-i-hate-this-place-").message("heheh:", str(item.permalink))
         elif ("useles" in item.body.lower() and "spell" in item.body.lower()):
+            reddit.inbox.mark_read([item])
             item.reply("""From the words you used, it seems like you are bashing the spelling of my username. I wanted to be useless-converter-bot 
                 because I wanted to be the useless version of 'converter-bot', however, Reddit has a 20 character limit for usernames and that's why 
                 I had to remove one character, I picked the S as there is a second one.""")
             reddit.redditor("-i-hate-this-place-").message("Useles Reply:", str(item.permalink))
         elif ("opt" in item.body.lower()):
+            reddit.inbox.mark_read([item])
             manage_opting(item)
         elif (check_for_units(item)[2] == True):
+            reddit.inbox.mark_read([item])
             item.reply(create_comment(make_units_standard(check_for_units(item))))
-        elif (check_for_units(reddit.comment(item.parent_id))[2] == True):
-            reddit.comment(item.parent_id).reply(create_comment(make_units_standard(check_for_units(reddit.comment(item.parent_id)))))
-
-    reddit.inbox.mark_all_read()
+        else:
+            reddit.inbox.mark_read([item])
+            try:
+                parent = item.parent()
+                if (check_for_units(parent)[2] == True):
+                    parent.reply(create_comment(make_units_standard(check_for_units(parent))))
+            except:
+                print("This comment didn't fit anything: ", end = "")
+            print(item.body)
 
 def append_new_IDs(ID):
     with open("comment_IDs.json") as file:
