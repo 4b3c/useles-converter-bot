@@ -59,25 +59,26 @@ def create_comment(type_and_amount):
     unit = type_and_amount[0]
     standard_unit = type_and_amount[1]
     measurement = type_and_amount[2]
+    unit_string = str(measurement) + " " + str(units[unit]) + " "
 
     if (unit < 5):
         rand_num = random.randint(0, 10)
         if (rand_num == 0):
             new_record = "is  " + str(round(standard_unit / 0.313, 2)) + " RTX 3090 graphics cards lined up."
         elif (rand_num == 1):
-            new_record = "is about the length of " + str(round(standard_unit / 0.6731, 2)) + " 'EuroGraphics Knittin' Kittens 500-Piece Puzzles' next to each other."
+            new_record = "is " + str(round(standard_unit / 0.84, 2)) + " UCS lego Millenium Falcons"
         elif (rand_num == 2):
             new_record = "is the length of about " + str(round(standard_unit / 1.089914, 2)) + " 'Ford F-150 Custom Fit Front FloorLiners' lined up next to each other."    
         elif (rand_num == 3):
             new_record = "is the height of " + str(round(standard_unit / 1.736852, 2)) + " 'Samsung Side by Side; Fingerprint Resistant Stainless Steel Refrigerators' stacked on top of each other."
         elif (rand_num == 4):
-            new_record = "is the length of like " + str(round(standard_unit / 0.22098, 2)) + " 'Zulay Premium Quality Metal Lemon Squeezers' laid next to each other."
+            new_record = "is the length of " + str(round(standard_unit / 0.22098, 2)) + " Zulay Premium Quality Metal Lemon Squeezers."
         elif (rand_num == 5):
             new_record = "is the same as " + str(round(standard_unit / 0.5, 2)) + " 'Logitech Wireless Keyboard K350s' laid widthwise by each other."
         elif (rand_num == 6):
             new_record = "is the length of approximately " + str(round(standard_unit / 0.2286, 2)) + " 'Wooden Rice Paddle Versatile Serving Spoons' laid lengthwise."
         elif (rand_num == 7):
-            new_record = "is the height of " + str(round(standard_unit /1.0668, 2)) + " stacked among us characters. I am sorry."
+            new_record = "is the length of " + str(round(standard_unit / 4.59486, 2)) + " 1997 Subaru Legacy Outbacks"
         elif (rand_num == 8):
             new_record = "is " + str(round(standard_unit / 2.03911, 2)) + "% of the hot dog which holds the Guinness wold record for 'Longest Hot Dog'."
         elif (rand_num == 9):
@@ -88,17 +89,18 @@ def create_comment(type_and_amount):
     elif (unit > 4):
         rand_num = random.randint(0, 10)
         if (rand_num == 0):
-            new_record = "of solid gold is worth about $" + str(round(standard_unit * 57.91, 2)) + "."
+            new_record = "of solid gold is worth about $" + str(round(standard_unit * 56.59, 2)) + "."
         elif (rand_num == 1):
             new_record = "of vegan poop being burned provides " + str(round(standard_unit * 16.5712, 2)) + " BTU."
         elif (rand_num == 2):
-            new_record = "is the weight of about " + str(round(standard_unit / 41.10681, 2)) + " 'Kingston 120GB Q500 SATA3 2.5 Solid State Drives'."
+            new_record = "is the weight of about " + str(round(standard_unit / 260, 2)) + " cups of fine sea salt. Yes, you did need to know that."
         elif (rand_num == 3):
-            new_record = "is the weight of literally " + str(round(standard_unit / 299.08747, 2)) + " 'Velener Mini Potted Plastic Fake Green Plants'."
+            new_record = "is the weight of " + str(round(standard_unit / 396.893, 2)) + " pairs of crocs."
         elif (rand_num == 4):
             new_record = "is the same weight as " + str(round(standard_unit / 639.5652, 2)) + " 'Double sided 60 inch Mermaker Pepparoni Pizza Blankets'."
         elif (rand_num == 5):
-            new_record = "is excactly the weight of " + str(round(standard_unit / 112.8311, 2)) + " '6pack TWOHANDS Assorted Pastel Color Highlighters'."
+            fun_fact = "Fun fact, " + unit_string + " of whatever is exactly the same as " + unit_string + " of candy... or big macs... or doofenshmirtzes."
+            return fun_fact
         elif (rand_num == 6):
             new_record = "of double AA batteries could start a medium sized car about " + str(round(standard_unit / 5400, 2)) + " times."
         elif (rand_num == 7):
@@ -108,22 +110,22 @@ def create_comment(type_and_amount):
         elif (rand_num == 9):
             new_record = "is the weight of $" + str(round(standard_unit / 11.36, 2)) + " worth of Premium Glass Nail Files..."
         elif (rand_num == 10):
-            new_record = "would need " + str(round(standard_unit / 100, 2)) + " human hairs to lift. This is assuming a hair can lift 100 grams, which is usualy but not always the case."
+            new_record = "is " + str(round(standard_unit / 408.2331, 2)) + " Doge plushies."
 
-    complete_comment = str(measurement) + " " + str(units[unit]) + " " + new_record
+    complete_comment = unit_string + new_record
     return complete_comment
 
 def manage_opting(comment):
     opted_out = get_opted_out()
 
-    if ("opt in" in comment.body.lower() and comment.author in opted_out):
+    if ("opt in" in comment.body.lower() or "opt-in" in comment.body.lower() and comment.author in opted_out):
         opted_out.remove(str(comment.author))
         comment.reply("You have been opted back in.")
-    elif ("opt in" in comment.body.lower()):
+    elif ("opt in" in comment.body.lower() or "opt-in" in comment.body.lower()):
         comment.reply("You aren't opted out.")
-    elif ("opt out" in comment.body.lower() and comment.author in opted_out):
+    elif ("opt out" in comment.body.lower() or "opt-out" in comment.body.lower() and comment.author in opted_out):
         comment.reply("You are already opted out.")
-    elif ("opt out" in comment.body.lower()):
+    elif ("opt out" in comment.body.lower() or "opt-out" in comment.body.lower()):
         opted_out.append(str(comment.author))
         comment.reply("You have been opted out.")
     else:
@@ -154,25 +156,21 @@ def check_inbox():
         elif ("sentient" in item.body.lower()):
             reddit.inbox.mark_read([item])
             item.reply("I swear... I'm a bot.")
-            reddit.redditor("-i-hate-this-place-").message("heheh:", str(item.permalink))
-        elif ("useless bot" in item.body.lower()):
-            reddit.inbox.mark_read([item])
-            item.reply("That's the point-")
-            reddit.redditor("-i-hate-this-place-").message("heheh:", str(item.permalink))
+            reddit.redditor("-i-hate-this-place-").message("sentient:", str(item.submission.url))
         elif ("sentient" in item.body.lower()):
             reddit.inbox.mark_read([item])
             item.reply("I swear... I'm a bot.")
-            reddit.redditor("-i-hate-this-place-").message("heheh:", str(item.permalink))
+            reddit.redditor("-i-hate-this-place-").message("heheh:", str(item.submission.url))
         elif ("sure you are a bot" in item.body.lower() or "sure you're a bot" in item.body.lower()):
             reddit.inbox.mark_read([item])
             item.reply("I am, I am a bot, I promise...")
-            reddit.redditor("-i-hate-this-place-").message("heheh:", str(item.permalink))
+            reddit.redditor("-i-hate-this-place-").message("sure you are a bot:", str(item.submission.url))
         elif ("useles" in item.body.lower() and "spell" in item.body.lower()):
             reddit.inbox.mark_read([item])
             item.reply("""From the words you used, it seems like you are bashing the spelling of my username. I wanted to be useless-converter-bot 
                 because I wanted to be the useless version of 'converter-bot', however, Reddit has a 20 character limit for usernames and that's why 
                 I had to remove one character, I picked the S as there is a second one.""")
-            reddit.redditor("-i-hate-this-place-").message("Useles Reply:", str(item.permalink))
+            reddit.redditor("-i-hate-this-place-").message("Useles Reply:", str(item.submission.url))
         elif ("opt" in item.body.lower()):
             reddit.inbox.mark_read([item])
             manage_opting(item)
@@ -185,6 +183,7 @@ def check_inbox():
                 parent = item.parent()
                 if (check_for_units(parent)[2] == True):
                     parent.reply(create_comment(make_units_standard(check_for_units(parent))))
+                    item.reply("Thanks for showing me this hehe...")
             except:
                 print("This comment didn't fit anything: ", end = "")
             print(item.body)
@@ -242,5 +241,5 @@ while True:
     except:
         exception = print_exception().lower()
         if ("http" not in exception and "ratelimit" not in exception):
-            print(prit_exception())
+            print(print_exception())
 
