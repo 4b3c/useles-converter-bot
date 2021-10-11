@@ -114,14 +114,4 @@ dmypy.json
 .pyre/
 
 # Files with Passwords
-BadConversionBot.py
-BadConversionBotUpdate1.1.py
 login_info.py
-
-# Files with comments or other things that change and don't need to be uploaded
-mention_comments.txt
-my_comments.txt
-opted_out.txt
-.run.bat
-opted_out.json
-comment_IDs.json
