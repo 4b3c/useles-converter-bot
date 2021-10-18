@@ -156,21 +156,21 @@ def check_inbox():
         elif ("sentient" in item.body.lower()):
             reddit.inbox.mark_read([item])
             item.reply("I swear... I'm a bot.")
-            reddit.redditor("-i-hate-this-place-").message("sentient:", str(item.submission.url))
+            reddit.redditor("-i-hate-this-place-").message("sentient:", "www.reddit.com" + str(item.submission.permalink))
         elif ("sentient" in item.body.lower()):
             reddit.inbox.mark_read([item])
             item.reply("I swear... I'm a bot.")
-            reddit.redditor("-i-hate-this-place-").message("heheh:", str(item.submission.url))
+            reddit.redditor("-i-hate-this-place-").message("heheh:", "www.reddit.com" + str(item.submission.permalink))
         elif ("sure you are a bot" in item.body.lower() or "sure you're a bot" in item.body.lower()):
             reddit.inbox.mark_read([item])
             item.reply("I am, I am a bot, I promise...")
-            reddit.redditor("-i-hate-this-place-").message("sure you are a bot:", str(item.submission.url))
+            reddit.redditor("-i-hate-this-place-").message("sure you are a bot:", "www.reddit.com" + str(item.submission.permalink))
         elif ("useles" in item.body.lower() and "spell" in item.body.lower()):
             reddit.inbox.mark_read([item])
             item.reply("""From the words you used, it seems like you are bashing the spelling of my username. I wanted to be useless-converter-bot 
                 because I wanted to be the useless version of 'converter-bot', however, Reddit has a 20 character limit for usernames and that's why 
                 I had to remove one character, I picked the S as there is a second one.""")
-            reddit.redditor("-i-hate-this-place-").message("Useles Reply:", str(item.submission.url))
+            reddit.redditor("-i-hate-this-place-").message("Useles Reply:", "www.reddit.com" + str(item.submission.permalink))
         elif ("opt" in item.body.lower()):
             reddit.inbox.mark_read([item])
             manage_opting(item)
