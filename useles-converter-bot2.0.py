@@ -5,8 +5,25 @@ reddit = login_info.reddit
 units = ["meters", "feet", "yards", "miles", "inches", "grams", "kilograms", "pounds", "lbs", "tons"]
 
 def get_opted_out():
-    with open('opted_out.json') as file:
+    with open("opted_out.json") as file:
         return json.load(file)
+
+def get_banned_subs():
+    with open("banned_subs.json") as file:
+        return json.load(file)
+
+def check_seriousness(comment):
+    serious_words = ["suicide", "died", "death", "dead"]
+    try:
+        for i in serious_words:
+            for j in range(7):
+                if i in comment:
+                    reddit.redditor("-i-hate-this-place-").message("Found a serious comment with a measurement:", "www.reddit.com" + str(item.submission.permalink))
+                    return True
+                else:
+                    comment = comment.parent
+    except:
+        return True
 
 def check_for_units(comment):
     try:
@@ -21,9 +38,10 @@ def check_for_units(comment):
             if (units[unit] == split_string[word].lower()):
                 if (split_string[word - 1].isdigit() == True):
                     if (comment.author not in get_opted_out()):
-
-                        unit_measurement = [unit, int(split_string[word - 1]), True]
-                        return unit_measurement
+                        if (comment.subreddit not in get_banned_subs()):
+                            if (check_seriousness(comment) != True):
+                                unit_measurement = [unit, int(split_string[word - 1]), True]
+                                return unit_measurement
 
     return [0, 0, False]
 
@@ -240,6 +258,11 @@ while True:
 
     except:
         exception = print_exception().lower()
-        if ("http" not in exception and "ratelimit" not in exception):
+        if ("HTTP" not in exception):
             print(print_exception())
+        else:
+            banned_subs = get_banned_subs()
+            banned_subs.append(comment)
+            with open("banned_subs.json", "w") as file:
+                json.dump(banned_subs)
 
