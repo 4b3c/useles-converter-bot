@@ -170,24 +170,29 @@ def check_inbox():
             item.reply(reply)
         elif ("bad bot" in item.body.lower()):
             reddit.inbox.mark_read([item])
-            item.reply("Rude! just kidding, if you want to opt out, reply 'opt out'. Thanks")
+            new_ID = item.reply("I'm sorry, if you would like to opt out so that I don't reply to you, you can reply 'opt out'.")
+            append_new_IDs(new_ID.id)
         elif ("sentient" in item.body.lower()):
             reddit.inbox.mark_read([item])
-            item.reply("I swear... I'm a bot.")
+            new_ID = item.reply("I swear... I'm a bot.")
+            append_new_IDs(new_ID.id)
             reddit.redditor("-i-hate-this-place-").message("sentient:", "www.reddit.com" + str(item.submission.permalink))
         elif ("sentient" in item.body.lower()):
             reddit.inbox.mark_read([item])
-            item.reply("I swear... I'm a bot.")
+            new_ID = item.reply("I swear... I'm a bot.")
+            append_new_IDs(new_ID.id)
             reddit.redditor("-i-hate-this-place-").message("heheh:", "www.reddit.com" + str(item.submission.permalink))
-        elif ("sure you are a bot" in item.body.lower() or "sure you're a bot" in item.body.lower()):
+        elif ("sure you are a bot" in item.body.lower() or "sure you're a bot" in item.body.lower() or "actually a bot" in item.body.lower()):
             reddit.inbox.mark_read([item])
-            item.reply("I am, I am a bot, I promise...")
+            new_ID = item.reply("I am, I am a bot, I promise...")
+            append_new_IDs(new_ID.id)
             reddit.redditor("-i-hate-this-place-").message("sure you are a bot:", "www.reddit.com" + str(item.submission.permalink))
         elif ("useles" in item.body.lower() and "spell" in item.body.lower()):
             reddit.inbox.mark_read([item])
-            item.reply("""From the words you used, it seems like you are bashing the spelling of my username. I wanted to be useless-converter-bot 
+            new_ID = item.reply("""From the words you used, it seems like you are bashing the spelling of my username. I wanted to be useless-converter-bot 
                 because I wanted to be the useless version of 'converter-bot', however, Reddit has a 20 character limit for usernames and that's why 
                 I had to remove one character, I picked the S as there is a second one.""")
+            append_new_IDs(new_ID.id)
             reddit.redditor("-i-hate-this-place-").message("Useles Reply:", "www.reddit.com" + str(item.submission.permalink))
         elif ("opt" in item.body.lower()):
             reddit.inbox.mark_read([item])
