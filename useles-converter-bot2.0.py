@@ -13,17 +13,17 @@ def get_banned_subs():
         return json.load(file)
 
 def check_seriousness(comment):
-    serious_words = ["suicide", "died", "death", "dead"]
+    serious_words = ["suicide", "died", "death", "dead", "scary"]
     try:
         for i in serious_words:
             for j in range(7):
-                if i in comment:
+                body = comment.body
+                comment = comment.parent
+                if i in body:
                     reddit.redditor("-i-hate-this-place-").message("Found a serious comment with a measurement:", "www.reddit.com" + str(item.submission.permalink))
                     return True
-                else:
-                    comment = comment.parent
     except:
-        return True
+        return False
 
 def check_for_units(comment):
     try:
@@ -38,10 +38,9 @@ def check_for_units(comment):
             if (units[unit] == split_string[word].lower()):
                 if (split_string[word - 1].isdigit() == True):
                     if (comment.author not in get_opted_out()):
-                        if (comment.subreddit not in get_banned_subs()):
-                            if (check_seriousness(comment) != True):
-                                unit_measurement = [unit, int(split_string[word - 1]), True]
-                                return unit_measurement
+                        if (check_seriousness(comment) != True):
+                            unit_measurement = [unit, int(split_string[word - 1]), True]
+                            return unit_measurement
 
     return [0, 0, False]
 
@@ -177,7 +176,7 @@ def check_inbox():
             new_ID = item.reply("I swear... I'm a bot.")
             append_new_IDs(new_ID.id)
             reddit.redditor("-i-hate-this-place-").message("sentient:", "www.reddit.com" + str(item.submission.permalink))
-        elif ("sentient" in item.body.lower()):
+        elif ("sentient" in item.body.lower() or "good human" in item.body.lower()):
             reddit.inbox.mark_read([item])
             new_ID = item.reply("I swear... I'm a bot.")
             append_new_IDs(new_ID.id)
@@ -194,6 +193,12 @@ def check_inbox():
                 I had to remove one character, I picked the S as there is a second one.""")
             append_new_IDs(new_ID.id)
             reddit.redditor("-i-hate-this-place-").message("Useles Reply:", "www.reddit.com" + str(item.submission.permalink))
+        elif ("read the room" in item.body.lower()):
+            reddit.inbox.mark_read([item])
+            try:
+                item.parent.delete()
+            except:
+                pass
         elif ("opt" in item.body.lower()):
             reddit.inbox.mark_read([item])
             manage_opting(item)
@@ -251,9 +256,10 @@ x = 0
 while True:
     try:
         for comment in reddit.subreddit("all").comments(limit = 200):
-            if (check_for_units(comment)[2] == True):
-                new_ID = comment.reply(create_comment(make_units_standard(check_for_units(comment))))
-                append_new_IDs(new_ID.id)
+            if (comment.subreddit not in get_banned_subs()):
+                if (check_for_units(comment)[2] == True):
+                    new_ID = comment.reply(create_comment(make_units_standard(check_for_units(comment))))
+                    append_new_IDs(new_ID.id)
 
         check_inbox()
         x = x + 1
@@ -262,12 +268,13 @@ while True:
             x = 0
 
     except:
+        time.sleep(1)
         exception = print_exception().lower()
-        if ("HTTP" not in exception):
-            print(print_exception())
-        else:
+        if ("http" in exception):
             banned_subs = get_banned_subs()
-            banned_subs.append(comment)
+            banned_subs.append(str(comment.subreddit))
             with open("banned_subs.json", "w") as file:
-                json.dump(banned_subs)
+                json.dump(banned_subs, file, indent = 3)
+        else:
+            print(exception)
 
