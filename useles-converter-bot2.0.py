@@ -20,7 +20,7 @@ def check_seriousness(comment):
                 body = comment.body
                 comment = comment.parent
                 if i in body:
-                    reddit.redditor("-i-hate-this-place-").message("Found a serious comment with a measurement:", "www.reddit.com" + str(item.submission.permalink))
+                    reddit.redditor("-i-hate-this-place-").message("Found a serious comment with a measurement:", "www.reddit.com" + str(comment.submission.permalink))
                     return True
     except:
         return False
@@ -114,7 +114,7 @@ def create_comment(type_and_amount):
         elif (rand_num == 3):
             new_record = "is the weight of " + str(round(standard_unit / 396.893, 2)) + " pairs of crocs."
         elif (rand_num == 4):
-            new_record = "is the same weight as " + str(round(standard_unit / 639.5652, 2)) + " 'Double sided 60 inch Mermaker Pepparoni Pizza Blankets'."
+            new_record = "is the same weight as " + str(round(standard_unit / 639.5652, 2)) + " 'Double sided 60 inch Mermaker Pepperoni Pizza Blankets'."
         elif (rand_num == 5):
             fun_fact = "Fun fact, " + unit_string + " of whatever is exactly the same as " + unit_string + " of candy... or big macs... or doofenshmirtzes."
             return fun_fact
@@ -135,16 +135,19 @@ def create_comment(type_and_amount):
 def manage_opting(comment):
     opted_out = get_opted_out()
 
-    if ("opt in" in comment.body.lower() or "opt-in" in comment.body.lower() and comment.author in opted_out):
-        opted_out.remove(str(comment.author))
-        comment.reply("You have been opted back in.")
-    elif ("opt in" in comment.body.lower() or "opt-in" in comment.body.lower()):
-        comment.reply("You aren't opted out.")
-    elif ("opt out" in comment.body.lower() or "opt-out" in comment.body.lower() and comment.author in opted_out):
-        comment.reply("You are already opted out.")
+    if ("opt in" in comment.body.lower() or "opt-in" in comment.body.lower()):
+      if (comment.author in opted_out):
+          opted_out.remove(str(comment.author))
+          comment.reply("You have been opted back in.")
+      elif ("opt in" in comment.body.lower() or "opt-in" in comment.body.lower()):
+          comment.reply("You aren't opted out.")
     elif ("opt out" in comment.body.lower() or "opt-out" in comment.body.lower()):
-        opted_out.append(str(comment.author))
-        comment.reply("You have been opted out.")
+      if (comment.author in opted_out):
+          comment.reply("You are already opted out.")
+          print(opted_out)
+      elif ("opt out" in comment.body.lower() or "opt-out" in comment.body.lower()):
+          opted_out.append(str(comment.author))
+          comment.reply("You have been opted out.")
     else:
         reddit.redditor("-i-hate-this-place-").message("OPT ERROR:", str(comment.submission.url))
 
@@ -253,6 +256,7 @@ def print_exception():
 
 print("Starting...")
 x = 0
+
 while True:
     try:
         for comment in reddit.subreddit("all").comments(limit = 200):
