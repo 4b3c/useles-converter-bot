@@ -13,7 +13,7 @@ def get_banned_subs():
         return json.load(file)
 
 def check_seriousness(comment):
-    serious_words = ["suicide", "died", "death", "dead", "scary"]
+    serious_words = ["suicide", "died", "death", "dead", "scary", "missing"]
     try:
         for i in serious_words:
             for j in range(7):
