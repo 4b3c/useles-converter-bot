@@ -79,7 +79,7 @@ def create_comment(type_and_amount):
     unit_string = str(measurement) + " " + str(units[unit]) + " "
 
     if (unit < 5):
-        rand_num = random.randint(0, 10)
+        rand_num = random.randint(0, 12)
         if (rand_num == 0):
             new_record = "is  " + str(round(standard_unit / 0.313, 2)) + " RTX 3090 graphics cards lined up."
         elif (rand_num == 1):
@@ -102,6 +102,13 @@ def create_comment(type_and_amount):
             new_record = "is the the same distance as " + str(round(standard_unit / 0.69, 2)) + " replica Bilbo from The Lord of the Rings' Sting Swords."
         elif (rand_num == 10):
             new_record = "is " + str(round(standard_unit / 1.8796, 2)) + " Obamas. You're welcome."
+        elif (rand_num == 11):
+            if (standard_unit < 0.0254):
+                new_record = "is " + str(round(standard_unit / 0.0000127)) + " Saran Wraps thick."
+            else:
+                new_record = "is " + str(round(standard_unit / 0.4826)) + "Elkay EZS8L Drinking Fountain with extra deep basin, easy touch controls and Flexi-Guard Anti-Microbial Safety Bubbler's laid widthwise."
+        elif (rand_num == 12):
+            new_record = "is " + str(round(standard_unit / 0.279908)) + "Reusable Extra Durable Checkered PVC Picnic Tablecloth with 6 Securing Clips - Waterproof and Easy-to-Clean Table Cover for Indoors or Outdoors tablecloths laid lengthwise."
     
     elif (unit > 4):
         rand_num = random.randint(0, 10)
@@ -257,9 +264,10 @@ while True:
     try:
         for comment in reddit.subreddit("all").comments(limit = 200):
             if (comment.subreddit not in get_banned_subs()):
-                if (check_for_units(comment)[2] == True):
-                    new_ID = comment.reply(create_comment(make_units_standard(check_for_units(comment))))
-                    append_new_IDs(new_ID.id)
+                if (comment.subreddit.over18 == False):
+                    if (check_for_units(comment)[2] == True):
+                        new_ID = comment.reply(create_comment(make_units_standard(check_for_units(comment))))
+                        append_new_IDs(new_ID.id)
 
         check_inbox()
         x = x + 1
